@@ -1,0 +1,94 @@
+import greenfoot.*;
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+
+public class Vocabulary
+{
+   public static void run() throws IOException
+   {
+      Scanner in = new Scanner(System.in);
+      String vocab_List = Greenfoot.ask("What Vocab list wil you be studing?: ");
+      Scanner list =  null;
+      int x2 = 0;
+      int y = 1;
+      ArrayList<String> problems = new ArrayList<String>();
+      Map<String, String> answers = new HashMap<String, String>();
+      int count= 0;
+      Scanner all = new Scanner(new File("All_Vocab.in"));
+      if(vocab_List.toLowerCase().equals ("all"))
+      {
+         list = new Scanner(new File("All_Vocab.in"));
+         list.nextLine();
+         while(list.hasNextLine())
+         {
+            list = new Scanner(new File(list.nextLine()));
+            while(list.hasNextLine())
+            {
+               problems.add(list.nextLine());
+               answers.put(problems.get(x2), list.nextLine());
+               x2++;
+            }
+            list = new Scanner(new File("All_Vocab.in"));
+            y++;
+            for(int r = 0; r < y; r++)
+            {
+               list.nextLine();
+            }
+         }
+         Collections.shuffle(problems);
+      }
+      else
+      {
+         list = new Scanner(new File(vocab_List+".in"));
+         ArrayList<String> last = new ArrayList<String>();
+         while(all.hasNextLine())
+         {
+            last.add(all.nextLine() + "\n");
+         }
+         FileWriter fw = new FileWriter("All_Vocab.in");
+            BufferedWriter bw = new BufferedWriter(fw);
+         for(int c = 0; c < last.size(); c++)
+         {
+            bw.write(last.get(c));
+         }
+            bw.write(vocab_List+".in");
+         bw.close();
+      }
+      while(list.hasNextLine())
+      {
+         problems.add(list.nextLine());
+         answers.put(problems.get(x2), list.nextLine());
+         x2++;
+      }
+      Collections.shuffle(problems);
+      for(int x = 0; x < problems.size(); x++)
+      {
+         String[] def = answers.get(problems.get(x)).split(" ");
+         String answer = Greenfoot.ask("What does " + problems.get(x) + " mean?");
+         count = 0;
+         for(String temp: def)
+         {
+            if(answer.contains(temp))
+               count++;
+         }
+         if(count > def.length/2 && count > 1 || count == def.length)
+         {
+            Pawn.current.showText("Correct");
+         }
+         else
+         {
+            System.out.println("Actually... it means " + answers.get(problems.get(x)));
+         }
+         
+         try 
+            {
+            Thread.sleep(1000); 
+         } 
+         catch (InterruptedException e) 
+         {
+            e.printStackTrace();
+         }      
+      }
+   }
+}

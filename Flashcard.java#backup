@@ -1,0 +1,45 @@
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+
+/**
+ * Write a description of class Flashcard here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+public class Flashcard extends World
+{
+    int count = 0;
+    /**
+     * Constructor for objects of class Flashcard.
+     * 
+     */
+    public Flashcard()
+    {    
+        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
+        super(600, 400, 1); 
+        addObject(new Play_Button(2), 100, 325);
+    }
+    
+    public void act()
+    {   
+        if(Greenfoot.mousePressed(this))
+        {
+            if(count == 0)
+            {
+                count++;
+            }
+            else
+            {
+                count--;
+            }
+        }
+        if(count == 0)
+        {
+            showText(Vocabulary.problems.get(Play_Button.card),300,200);
+        }
+        else
+        {
+            showText(Vocabulary.answers.get(Vocabulary.problems.get(Play_Button.card)), 300, 200);
+        }
+    }
+}
